@@ -135,6 +135,92 @@ function App() {
 }
 
 
+//routes
+
+// ... (Code précédent)
+
+const handleGetRestaurant = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:5000/restaurants/${id}`);
+    if (response.status === 200) {
+      const data = await response.json();
+      console.log(data); // Faites quelque chose avec les données du restaurant
+    } else {
+      const errorData = await response.json();
+      console.error('Error getting restaurant:', errorData);
+    }
+  } catch (error) {
+    console.error('Error getting restaurant:', error);
+  }
+};
+
+const handleDeleteRestaurant = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:5000/restaurants/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (response.status === 204) {
+      // Mise à jour de la liste des restaurants après la suppression
+      fetchRestaurants();
+    } else if (response.status === 404) {
+      const errorData = await response.json();
+      console.error('Error deleting restaurant:', errorData);
+    }
+  } catch (error) {
+    console.error('Error deleting restaurant:', error);
+  }
+};
+
+const handleGetPizzas = async () => {
+  try {
+    const response = await fetch('http://localhost:5000/pizzas');
+    if (response.status === 200) {
+      const data = await response.json();
+      console.log(data); // Faites quelque chose avec les données des pizzas
+    } else {
+      const errorData = await response.json();
+      console.error('Error getting pizzas:', errorData);
+    }
+  } catch (error) {
+    console.error('Error getting pizzas:', error);
+  }
+};
+
+const handleCreateRestaurantPizza = async () => {
+  // ... (Code précédent)
+
+  const newPizza = {
+    price: 5,
+    pizza_id: 1,
+    restaurant_id: 3,
+  };
+
+  try {
+    const response = await fetch('http://localhost:5000/restaurant_pizzas', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPizza),
+    });
+
+    if (response.status === 201) {
+      // Mise à jour de la liste des pizzas après la création
+      fetchPizzas();
+    } else if (response.status === 400) {
+      const errorData = await response.json();
+      console.error('Error creating restaurant pizza:', errorData);
+    }
+  } catch (error) {
+    console.error('Error creating restaurant pizza:', error);
+  }
+};
+
+// ... (Le reste du code)
+
+
+
 
 
 export default App;
